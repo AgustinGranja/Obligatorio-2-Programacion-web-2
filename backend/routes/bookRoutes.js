@@ -29,8 +29,13 @@ router.put('/books/:id', async (req, res) => {
 
 // Eliminar un libro
 router.delete('/books/:id', async (req, res) => {
-    await Book.findOneAndDelete();
-    res.json({ message: 'Book deleted' });
+    try {
+        await Book.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Book deleted' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting book' });
+    }
 });
+
 
 module.exports = router;

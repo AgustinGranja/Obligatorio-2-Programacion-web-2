@@ -127,7 +127,6 @@ async function loadBooks() {
             deleteButton.onclick = async () => {
                 if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {
                     await deleteBook(book._id);
-                    loadBooks();
                 }
             };
             detailsDiv.appendChild(deleteButton);
@@ -136,22 +135,11 @@ async function loadBooks() {
             const changeImageButton = document.createElement('button');
             changeImageButton.textContent = 'Cambiar Imagen';
             changeImageButton.style.backgroundColor = '#007BFF';
-            changeImageButton.style.marginLeft = '10px';
+            changeImageButton.style.marginTop = '10px';
             changeImageButton.onclick = () => {
                 changeImage(book.title, img);
             };
             detailsDiv.appendChild(changeImageButton);
-
-            // Hacer clic en el libro para ver detalles
-            img.onclick = async () => {
-                const bookDetails = await fetchBookDetails(book.title);
-                if (bookDetails) {
-                    sessionStorage.setItem('bookDetails', JSON.stringify(bookDetails));
-                    window.location.href = 'book_detail.html';
-                } else {
-                    alert('No se encontraron detalles adicionales para este libro.');
-                }
-            };
 
             li.appendChild(detailsDiv);
             booksList.appendChild(li);
@@ -182,36 +170,6 @@ function renderPagination(totalPages) {
     }
 }
 
-
-
-async function deleteBook(bookId) {
-    fetch(`/api/books/${bookId}`, {
-        method: 'DELETE',
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Book deleted:', data);
-    })
-    .catch(error => console.error('Error deleting book:', error));
-}
-
-function loadBookDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const bookId = urlParams.get('id');
-
-    if (bookId) {
-        fetch(`/api/books/${bookId}`)
-            .then(response => response.json())
-            .then(book => {
-            document.getElementById('title').value = book.title;
-            document.getElementById('author').value = book.author;
-            document.getElementById('genre').value = book.genre;
-            document.getElementById('completion_date').value = book.completion_date.split('T')[0];
-            document.getElementById('stars').value = book.stars;
-        })
-        .catch(error => console.error('Error loading book details:', error));
-    }
-}
 
 function displayBookDetails() {
     const bookDetails = JSON.parse(sessionStorage.getItem('bookDetails'));
@@ -244,6 +202,8 @@ function addOrEditBook(event) {
         completion_date: document.getElementById('completion_date').value,
         stars: document.getElementById('stars').value,
     };
+
+    console.log(endpoint);
 
     fetch(endpoint, {
         method: method,
@@ -279,6 +239,19 @@ function registerUser(event) {
             window.location.href = '/index.html';
         })
         .catch(error => console.error('Error:', error));
+}
+
+async function deleteBook(bookId) {
+    try {
+        const response = await fetch(`/api/books/${bookId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        console.log('Book deleted:', data);
+        loadBooks(); // Recargar la lista de libros después de la eliminación
+    } catch (error) {
+        console.error('Error deleting book:', error);
+    }
 }
 
 function loginUser(event) {

@@ -6,7 +6,6 @@ const bookSchema = new mongoose.Schema({
     genre: String,
     completion_date: String,
     stars: Number,
-    userIdentifier: { type: String, required: true } // Identificador del usuario
 });
 
 module.exports = mongoose.model('Book', bookSchema);
