@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Libro - MyLibrary Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="displayBookDetails()">
+    <div class="container">
+        <nav>
+            <a href="main.html">Lista de Libros</a>
+            <a href="book_form.html">Añadir Libro</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
+        </nav>
+        <h1 id="book-title">Título del Libro</h1>
+        <p><strong>Autor:</strong> <span id="book-author"></span></p>
+        <p><strong>Género:</strong> <span id="book-genre"></span></p>
+        <p><strong>Fecha de Publicación:</strong> <span id="book-publication-date"></span></p>
+        <p><strong>Descripción:</strong> <span id="book-description"></span></p>
+        <p><strong>Editorial:</strong> <span id="book-publisher"></span></p>
+        <p><strong>Número de Páginas:</strong> <span id="book-page-count"></span></p>
+        <p><strong>ISBN:</strong> <span id="book-isbn"></span></p>
+        <a href="main.html">Volver a la Lista</a>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

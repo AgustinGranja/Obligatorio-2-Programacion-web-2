@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir/Editar Libro - MyLibrary Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="loadBookDetails()">
+    <div class="container">
+        <nav>
+            <a href="main.html">Lista de Libros</a>
+            <a href="book_form.html">Añadir Libro</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
+        </nav>
+        <h1>Añadir/Editar Libro</h1>
+        <form onsubmit="addOrEditBook(event)">
+            <label for="title">Título</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="author">Autor</label>
+            <input type="text" id="author" name="author" required>
+            
+            <label for="genre">Género</label>
+            <select id="genre" name="genre" required>
+                <option value="Ficción literaria">Ficción literaria</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Fantasía">Fantasía</option>
+                <option value="Romance">Romance</option>
+                <option value="No Ficción">No Ficción</option>
+            </select>
+            
+            <label for="completion_date">Fecha y Hora de Finalización</label>
+            <input type="datetime-local" id="completion_date" name="completion_date" required>
+            
+            <label for="stars">Calificación</label>
+            <select id="stars" name="stars" required>
+                <option value="1">★</option>
+                <option value="2">★★</option>
+                <option value="3">★★★</option>
+                <option value="4">★★★★</option>
+                <option value="5">★★★★★</option>
+            </select>
+            
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+

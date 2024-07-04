@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLibrary Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body onload="loadBooks()">
+    <div class="container">
+        <nav>
+            <a href="main.html">Lista de Libros</a>
+            <a href="book_form.html">Añadir Libro</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
+        </nav>
+        <h1>Lista de Libros</h1>
+        <label for="genreFilter">Filtrar por género:</label>
+        <select id="genreFilter" class="filter-input" onchange="loadBooks()">
+            <option value="all">Todos los géneros</option>
+            <option value="Ficción literaria">Ficción literaria</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Fantasía">Fantasía</option>
+            <option value="Romance">Romance</option>
+            <option value="No Ficción">No Ficción</option>
+        </select>
+
+        <!-- Barra de búsqueda -->
+        <input type="text" id="searchBar" class="filter-input" placeholder="Buscar por título" oninput="debounceSearch()">
+        
+        <ul id="books-list">
+            <!-- Lista de libros se carga aquí -->
+        </ul>
+
+        <!-- Contenedor de paginación -->
+        <div id="pagination"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
