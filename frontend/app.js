@@ -135,7 +135,7 @@ async function loadBooks() {
             const changeImageButton = document.createElement('button');
             changeImageButton.textContent = 'Cambiar Imagen';
             changeImageButton.style.backgroundColor = '#007BFF';
-            changeImageButton.style.marginTop = '10px';
+            changeImageButton.style.marginLeft = '10px';
             changeImageButton.onclick = () => {
                 changeImage(book.title, img);
             };
