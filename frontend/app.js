@@ -135,7 +135,7 @@ async function loadBooks() {
             const changeImageButton = document.createElement('button');
             changeImageButton.textContent = 'Cambiar Imagen';
             changeImageButton.style.backgroundColor = '#007BFF';
-            changeImageButton.style.marginLeft = '10px';
+            changeImageButton.style.marginTop = '10px';
             changeImageButton.onclick = () => {
                 changeImage(book.title, img);
             };
@@ -150,6 +150,7 @@ async function loadBooks() {
         console.error('Error:', error);
     }
 }
+
 
 function renderPagination(totalPages) {
     const paginationContainer = document.getElementById('pagination');
@@ -167,6 +168,24 @@ function renderPagination(totalPages) {
             loadBooks();
         };
         paginationContainer.appendChild(pageButton);
+    }
+}
+
+function loadBookDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id');
+
+    if (bookId) {
+        fetch(`/api/books/${bookId}`)
+            .then(response => response.json())
+            .then(book => {
+                document.getElementById('title').value = book.title;
+                document.getElementById('author').value = book.author;
+                document.getElementById('genre').value = book.genre;
+                document.getElementById('completion_date').value = book.completion_date.split('T')[0];
+                document.getElementById('stars').value = book.stars;
+            })
+            .catch(error => console.error('Error loading book details:', error));
     }
 }
 
