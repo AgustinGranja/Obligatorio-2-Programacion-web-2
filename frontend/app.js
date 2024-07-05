@@ -114,7 +114,8 @@ async function loadBooks() {
             // Botón de editar
             const editButton = document.createElement('button');
             editButton.textContent = 'Editar';
-            editButton.onclick = () => {
+            editButton.onclick = (event) => {
+                event.stopPropagation();
                 window.location.href = `book_form.html?id=${book._id}`;
             };
             detailsDiv.appendChild(editButton);
@@ -124,9 +125,11 @@ async function loadBooks() {
             deleteButton.textContent = 'Eliminar';
             deleteButton.style.backgroundColor = '#dc3545';
             deleteButton.style.marginLeft = '10px';
-            deleteButton.onclick = async () => {
+            deleteButton.onclick = async (event) => {
+                event.stopPropagation();
                 if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {
                     await deleteBook(book._id);
+                    loadBooks();
                 }
             };
             detailsDiv.appendChild(deleteButton);
@@ -135,11 +138,23 @@ async function loadBooks() {
             const changeImageButton = document.createElement('button');
             changeImageButton.textContent = 'Cambiar Imagen';
             changeImageButton.style.backgroundColor = '#007BFF';
-            changeImageButton.style.marginTop = '10px';
-            changeImageButton.onclick = () => {
+            changeImageButton.style.marginLeft = '10px';
+            changeImageButton.onclick = (event) => {
+                event.stopPropagation();
                 changeImage(book.title, img);
             };
             detailsDiv.appendChild(changeImageButton);
+
+            // Evento onclick para ver detalles
+            img.onclick = async () => {
+                const bookDetails = await fetchBookDetails(book.title);
+                if (bookDetails) {
+                    sessionStorage.setItem('bookDetails', JSON.stringify(bookDetails));
+                    window.location.href = 'book_detail.html';
+                } else {
+                    alert('No se encontraron detalles adicionales para este libro.');
+                }
+            };
 
             li.appendChild(detailsDiv);
             booksList.appendChild(li);
@@ -150,6 +165,7 @@ async function loadBooks() {
         console.error('Error:', error);
     }
 }
+
 
 
 function renderPagination(totalPages) {
@@ -179,15 +195,20 @@ function loadBookDetails() {
         fetch(`/api/books/${bookId}`)
             .then(response => response.json())
             .then(book => {
-                document.getElementById('title').value = book.title;
-                document.getElementById('author').value = book.author;
-                document.getElementById('genre').value = book.genre;
-                document.getElementById('completion_date').value = book.completion_date.split('T')[0];
-                document.getElementById('stars').value = book.stars;
+                if (book) {
+                    document.getElementById('title').value = book.title || '';
+                    document.getElementById('author').value = book.author || '';
+                    document.getElementById('genre').value = book.genre || '';
+                    document.getElementById('completion_date').value = book.completion_date ? book.completion_date.split('T')[0] : '';
+                    document.getElementById('stars').value = book.stars || '';
+                } else {
+                    alert('Libro no encontrado');
+                }
             })
             .catch(error => console.error('Error loading book details:', error));
     }
 }
+
 
 
 function displayBookDetails() {
@@ -205,6 +226,8 @@ function displayBookDetails() {
         alert('No se encontraron detalles adicionales para este libro.');
     }
 }
+
+
 
 
 function addOrEditBook(event) {

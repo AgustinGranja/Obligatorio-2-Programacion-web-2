@@ -10,9 +10,18 @@ router.get('/books', async (req, res) => {
 
 // Obtener un libro por ID
 router.get('/books/:id', async (req, res) => {
-    const book = await Book.findOne();
-    res.json(book);
+    try {
+        const book = await Book.findById(req.params.id);
+        if (book) {
+            res.json(book);
+        } else {
+            res.status(404).json({ message: 'Book not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching book' });
+    }
 });
+
 
 // Crear un nuevo libro
 router.post('/books', async (req, res) => {
